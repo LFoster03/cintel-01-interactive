@@ -5,41 +5,42 @@ import matplotlib.pyplot as plt
 import numpy as np
 from shiny.express import ui, input, render
 
-# Add page options for the app
-ui.page_opts(title="Distribution Plotter", fillable=True)
+# Add page options for the overall app
+ui.page_opts(title="Penguin Distribution Plotter", fillable=True)
 
 # Create a sidebar with a slider input
 with ui.sidebar():
     ui.input_slider(
-        "selected_number_of_bins",     # Unique ID
-        "Number of Bins",              # Label
-        0,                             # Minimum number of bins
-        100,                           # Maximum number of bins
-        20                             # Initial number of bins
+        "selected_amount_of_bins",     # Unique ID
+        "Amount of Bins",              # Label
+        5,                             # Minimum number of bins
+        200,                           # Maximum number of bins
+        10                             # Initial number of bins
     )
 
-@render.plot(alt="Histogram showing data distribution based on selected number of bins")
+@render.plot(alt="Histogram showing data distribution based on selected amount of bins")
 def plot_histogram():
     # Total number of points to generate
     num_points = 500
 
     # Set seed for reproducibility
-    np.random.seed(42)
+    np.random.seed(53)
 
     # Generate random data centered at 50 with spread of 10
     data = 50 + 10 * np.random.randn(num_points)
 
     # Create histogram using selected number of bins
-    plt.hist(data, bins=input.selected_number_of_bins(), density=True, color='skyblue', edgecolor='black')
+    plt.hist(data, bins=input.selected_amount_of_bins(), density=True, color='skyblue', edgecolor='black')
 
     # Add labels and title for better presentation
     plt.xlabel('Value')
     plt.ylabel('Density')
     plt.title('Histogram of Random Data Distribution')
     plt.grid(True)
+
 # Elements Included:
-## Page title - "Distribution Plotter" used
-## Slider input	- ID: "selected_number_of_bins", Label: "Number of Bins", Min: 0, Max: 100, Initial: 20
+## Page title - "Pemguin Distribution Plotter" used
+## Slider input	- ID: "selected_amount_of_bins", Label: "Amount of Bins", Min: 5, Max: 200, Initial: 10
 ## Reactive plot -	Plot updates automatically when slider changes
 ## plt.hist() with density=True	-	Used to normalize the histogram
 
@@ -57,11 +58,11 @@ from shiny.express import ui, input, render
 from shiny import reactive
 
 # App page options
-ui.page_opts(title="Advanced Distribution Plotter", fillable=True)
+ui.page_opts(title="Advanced Penguin Distribution Plotter", fillable=True)
 
 # Sidebar: user controls
 with ui.sidebar():
-    ui.input_slider("selected_number_of_bins", "Number of Bins", 0, 100, 20)
+    ui.input_slider("selected_amount_of_bins", "Amount of Bins", 5, 200, 10)
     ui.input_numeric("data_mean", "Data Mean", 50)
     ui.input_numeric("data_std", "Data Spread (Std Dev)", 10)
     ui.input_select("hist_color", "Histogram Color", choices=["skyblue", "lightgreen", "salmon", "plum"], selected="skyblue")
@@ -88,7 +89,7 @@ def plot_histogram():
 
     plt.hist(
         data,
-        bins=input.selected_number_of_bins(),
+        bins=input.selected_amount_of_bins(),
         density=True,
         color=input.hist_color(),
         edgecolor='black'
@@ -105,3 +106,4 @@ def data_summary():
     mean_value = np.mean(data)
     std_value = np.std(data)
     return f"Data Mean: {mean_value:.2f}, Data Standard Deviation: {std_value:.2f}"
+
